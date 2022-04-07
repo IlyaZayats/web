@@ -116,13 +116,15 @@ if($_SERVER['REQUEST_METHOD'] == 'GET') {
         $stmt_1->bindParam(':gender', $userGender);
         $stmt_1->bindParam(':limbs', $userLimbs);
         $stmt_1->bindParam(':bio', $userBio);
-        if (!$stmt_1->execute()) {
-            print('execute1 error ');
-        }
+        $db->beginTransaction();
+        $stmt_1->execute();
+        $id = $db->lastInsertId();
+        $db->commit();
 
-        $get_id = $db->prepare("select max(id) from user_data");
-        $get_id->execute();
-        $id = $get_id->fetchColumn();
+
+        //$get_id = $db->prepare("select max(id) from user_data");
+        //$get_id->execute();
+        //$id = $get_id->fetchColumn();
 
 
         $stmt_2 = $db->prepare("INSERT INTO user_ab (user_data_id, god, noclip, levitation) VALUES (:id, :god, :noclip, :levitation)");
@@ -130,9 +132,10 @@ if($_SERVER['REQUEST_METHOD'] == 'GET') {
         $stmt_2->bindParam(':god', $userAb[0]);
         $stmt_2->bindParam(':noclip', $userAb[1]);
         $stmt_2->bindParam(':levitation', $userAb[2]);
-        if (!$stmt_2->execute()) {
-            print('execute2 error ');
-        }
+        $db->beginTransaction();
+        $stmt_2->execute();
+        $db->commit();
+
     } catch (PDOException $e) {
         print('Error : ' . $e->getMessage());
         exit();
