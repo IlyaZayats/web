@@ -110,7 +110,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     if (empty($_POST['userName'])) {
         setcookie('userName_error', '1', time() + 24 * 60 * 60);
         $errors = TRUE;
-    } else if(!preg_match("/^[\sa-zA-Zа-яА-Я-]/", $_POST['userName'])){
+    } else if(!preg_match("/^[\sa-zA-Zа-яА-Я-]+$/", $_POST['userName'])){
         setcookie('userName_wrong', '8', time() + 24 * 60 * 60);
         $errors = TRUE;
     } else {
@@ -162,7 +162,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         setcookie('userLimbs_value', $userLimbs, time() + 30 * 24 * 60 * 60);
     }
 
-    if (!preg_match("/^[0-9\sa-zA-Zа-яА-Я.,-]/",$_POST['userBio'])){
+    if (!preg_match("/^[0-9\sa-zA-Zа-яА-Я.,!;?:-]+$/",$_POST['userBio'])){
         setcookie('userBio_error', '7', time() + 24 * 60 * 60);
         $errors = TRUE;
     } else {
