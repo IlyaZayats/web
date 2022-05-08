@@ -16,21 +16,15 @@ $pass="3584958";
 try{
     $db = new PDO('mysql:host=localhost;dbname=u47553', $user, $pass, array(PDO::ATTR_PERSISTENT => true));
     $get_pwd = $db->prepare("SELECT password FROM admin WHERE login=:login");
-    $login = 'admin';
-    $get_pwd->bindParam(':login', $login);
+    $get_pwd->bindParam(':login', $_SERVER['PHP_AUTH_USER']);
     $get_pwd->execute();
     $pwd = current(current($get_pwd->fetchAll(PDO::FETCH_ASSOC)));
-//    var_dump($pwd);
-//    var_dump(md5('T8LHGTYmY9sWIedh'));
 }catch (PDOException $e) {
     print('Error : ' . $e->getMessage());
     exit();
 }
 
-if (empty($_SERVER['PHP_AUTH_USER']) ||
-    empty($_SERVER['PHP_AUTH_PW']) ||
-    $_SERVER['PHP_AUTH_USER'] != 'admin' ||
-    md5($_SERVER['PHP_AUTH_PW']) != $pwd) {
+if (empty($_SERVER['PHP_AUTH_USER']) || empty($_SERVER['PHP_AUTH_PW']) || md5($_SERVER['PHP_AUTH_PW']) != $pwd) {
   header('HTTP/1.1 401 Unanthorized');
   header('WWW-Authenticate: Basic realm="My site"');
   print('<h1>401 Требуется авторизация</h1>');
@@ -94,38 +88,27 @@ $god_amount = 0;
 $noclip_amount = 0;
 $levitation_amount = 0;
 for($i=0; $i<count($data); $i++){
-    $id = $data[$i]['id'];
-    $name = $data[$i]['name'];
-    $email = $data[$i]['email'];
-    $birthdate = $data[$i]['birthdate'];
-    $limbs = $data[$i]['limbs'];
-    $bio = $data[$i]['bio'];
-    $gender = $data[$i]['gender'];
-    $god = $ab[$i]['god'];
-    $noclip = $ab[$i]['noclip'];
-    $levitation = $ab[$i]['levitation'];
-    $god_amount += $god;
-    $noclip_amount += $noclip;
-    $levitation_amount += $levitation;
+    $god_amount += $ab[$i]['god'];
+    $noclip_amount += $ab[$i]['noclip'];
+    $levitation_amount += $ab[$i]['levitation'];
     echo '
             <tr>
-                <th class="col">'.$id.'</th>
-                <th class="col">'.$name.'</th>
-                <th class="col">'.$email.'</th>
-                <th class="col">'.$birthdate.'</th>
-                <th class="col">'.$gender.'</th>
-                <th class="col">'.$limbs.'</th>
-                <th class="col">'.$god.'</th>
-                <th class="col">'.$noclip.'</th>
-                <th class="col">'.$levitation.'</th>
-                <th class="col">'.$bio.'</th>
+                <th class="col">'.$data[$i]['id'].'</th>
+                <th class="col">'.$data[$i]['name'].'</th>
+                <th class="col">'.$data[$i]['email'].'</th>
+                <th class="col">'.$data[$i]['birthdate'].'</th>
+                <th class="col">'.$data[$i]['gender'].'</th>
+                <th class="col">'.$data[$i]['limbs'].'</th>
+                <th class="col">'.$ab[$i]['god'].'</th>
+                <th class="col">'.$ab[$i]['noclip'].'</th>
+                <th class="col">'.$ab[$i]['levitation'].'</th>
+                <th class="col">'.$data[$i]['bio'].'</th>
                 <th class="col"><form method="POST"><input class="btn btn-info" type="submit" name="change'.$i.'" value="Change"></form></th>
                 <th class="col"><form method="POST"><input class="btn btn-danger" type="submit" name="delete'.$i.'" value="Delete"></form></th>
             </tr>';
 }
     echo '</tbody>
-           </table>
-           </body>';
+           </table>';
 
 echo '<table class="table table-dark table-hover mt-2">
         <thead>
@@ -143,6 +126,8 @@ echo '<table class="table table-dark table-hover mt-2">
             </tr>
         </tbody>
         <tbody>';
+
+echo '</body>';
 
 for($i=0; $i<count($data); $i++){
     if(isset($_POST['change'.$i])){

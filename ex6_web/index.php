@@ -181,6 +181,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
             print('Error : ' . $e->getMessage());
             exit();
         }
+
         $values['userName'] = filter_var($data[0]['name'],FILTER_SANITIZE_SPECIAL_CHARS);
         $values['userEmail'] = filter_var($data[0]['email'], FILTER_SANITIZE_SPECIAL_CHARS);
         $values['userBirthdate'] = $data[0]['birthdate'];
@@ -192,10 +193,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         $values['userAb2'] = $data_ab[0]['levitation'];
         print('<div style="color:#ffc107; background-color:#212529;">');
         if(empty($_SESSION['admin'])) {
-            printf('Вход с логином %s, uid %d', $_SESSION['login'], $_SESSION['uid']);
+            printf('Вход с логином %s, uid %d' , $_SESSION['login'], $_SESSION['uid']);
         } else {
-            printf('Изменение данных с логином %s, uid %d', $_SESSION['login'], $_SESSION['uid']);
-            var_dump($values);
+            printf('Изменение данных с логином %s, uid %d' , $_SESSION['login'], $_SESSION['uid']);
         }
         print('</div>');
     }
@@ -403,13 +403,12 @@ else {
         }
     }
 
-    setcookie('save', '1');
-
     if(session_start() && !empty($_SESSION['admin'])){
         header('Location: admin.php');
         exit();
+    } else {
+        setcookie('save', '1');
+        header('Location: ./');
     }
 
-
-    header('Location: ./');
 }
