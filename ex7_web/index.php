@@ -184,13 +184,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 
         $values['userName'] = filter_var($data[0]['name'],FILTER_SANITIZE_SPECIAL_CHARS);
         $values['userEmail'] = filter_var($data[0]['email'], FILTER_SANITIZE_SPECIAL_CHARS);
-        $values['userBirthdate'] = $data[0]['birthdate'];
-        $values['userGender'] = $data[0]['gender'];
-        $values['userLimbs'] = $data[0]['limbs'];
+        $values['userBirthdate'] = filter_var($data[0]['birthdate'], FILTER_SANITIZE_SPECIAL_CHARS);
+        $values['userGender'] = intval($data[0]['gender']);
+        $values['userLimbs'] = intval($data[0]['limbs']);
         $values['userBio'] = filter_var($data[0]['bio'], FILTER_SANITIZE_SPECIAL_CHARS);
-        $values['userAb0'] = $data_ab[0]['god'];
-        $values['userAb1'] = $data_ab[0]['noclip'];
-        $values['userAb2'] = $data_ab[0]['levitation'];
+        $values['userAb0'] = intval($data_ab[0]['god']);
+        $values['userAb1'] = intval($data_ab[0]['noclip']);
+        $values['userAb2'] = intval($data_ab[0]['levitation']);
         print('<div style="color:#ffc107; background-color:#212529;">');
         if(empty($_SESSION['admin'])) {
             printf('Вход с логином %s, uid %d' , $_SESSION['login'], $_SESSION['uid']);

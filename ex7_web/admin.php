@@ -37,9 +37,9 @@ if (empty($_SERVER['PHP_AUTH_USER']) || empty($_SERVER['PHP_AUTH_PW']) || md5($_
         <meta charset="UTF-8">
         <meta http-equiv='X-UA-Compatible' content='IE=edge'/>
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
-        <title>Admin Ex6</title>
-        <link rel="stylesheet" href="../Project/css/bootstrap.css">
-        <link rel="stylesheet" href="../Project/css/style.css">
+        <title>Admin Ex7</title>
+        <link rel="stylesheet" href="css/bootstrap.css">
+        <link rel="stylesheet" href="css/style.css">
     </head>
     <body>
 
@@ -93,16 +93,16 @@ for($i=0; $i<count($data); $i++){
     $levitation_amount += $ab[$i]['levitation'];
     echo '
             <tr>
-                <th class="col">'.$data[$i]['id'].'</th>
-                <th class="col">'.$data[$i]['name'].'</th>
-                <th class="col">'.$data[$i]['email'].'</th>
-                <th class="col">'.$data[$i]['birthdate'].'</th>
-                <th class="col">'.$data[$i]['gender'].'</th>
-                <th class="col">'.$data[$i]['limbs'].'</th>
-                <th class="col">'.$ab[$i]['god'].'</th>
-                <th class="col">'.$ab[$i]['noclip'].'</th>
-                <th class="col">'.$ab[$i]['levitation'].'</th>
-                <th class="col">'.$data[$i]['bio'].'</th>
+                <th class="col">'.filter_var($data[$i]['id'], FILTER_SANITIZE_SPECIAL_CHARS).'</th>
+                <th class="col">'.filter_var($data[$i]['name'],FILTER_SANITIZE_SPECIAL_CHARS).'</th>
+                <th class="col">'.filter_var($data[$i]['email'],FILTER_SANITIZE_SPECIAL_CHARS).'</th>
+                <th class="col">'.filter_var($data[$i]['birthdate'],FILTER_SANITIZE_SPECIAL_CHARS).'</th>
+                <th class="col">'.intval($data[$i]['gender']).'</th>
+                <th class="col">'.intval($data[$i]['limbs']).'</th>
+                <th class="col">'.intval($ab[$i]['god']).'</th>
+                <th class="col">'.intval($ab[$i]['noclip']).'</th>
+                <th class="col">'.intval($ab[$i]['levitation']).'</th>
+                <th class="col">'.filter_var($data[$i]['bio'],FILTER_SANITIZE_SPECIAL_CHARS).'</th>
                 <th class="col"><form method="POST"><input class="btn btn-info" type="submit" name="change'.$i.'" value="Change"></form></th>
                 <th class="col"><form method="POST"><input class="btn btn-danger" type="submit" name="delete'.$i.'" value="Delete"></form></th>
             </tr>';
